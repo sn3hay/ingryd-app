@@ -1,0 +1,33 @@
+# Secrets: database URLs, API keys. Only the template is committed.
+.env
+.env.*
+!.env.example
+
+# Downloaded datasets (large; licensed separately)
+data/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Front end
+node_modules/
+dist/
+
+# Logs
+*.log
+
+# Editors and OS
+.DS_Store
+.vscode/
+.idea/
+
+# Local notes
+CLAUDE.md
+PLAN.md

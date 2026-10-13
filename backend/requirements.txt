@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+httpx
+psycopg[binary]
+python-dotenv
+pandas
+pytest
+pyyaml

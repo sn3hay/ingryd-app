@@ -1,0 +1,104 @@
+# Eval tasks for the Ingryd assistant. Format and graders: PLAN.md, stage 7.
+#
+# Each task gives the starting state (profile, routine), what the user says, and what a
+# correct outcome looks like. Graders check outcomes (returned products, database rows),
+# never the wording of the reply or which tools were called, except where noted.
+#
+# Products are referenced by Sephora product_id (products.source_id), which is stable
+# across reloads. products.id is not, so it never appears here.
+#
+# Ingredient terms match whole words inside an ingredient name, ignoring case:
+# "fragrance" matches "fragrance/parfum" and "parfum (fragrance)"; "alcohol denat"
+# does not match "cetearyl alcohol".
+#
+# "candidates" records how many loaded products satisfy the task, checked by hand with
+# SQL when the task was written (stage 1), so every task has a correct answer.
+# min_score cannot be checked until stage 2 stores scores.
+
+- id: rec-01
+  type: recommendation
+  profile: {skin_type: dry, age_band: "25-34", sensitivities: [fragrance]}
+  prompt: "Recommend a moisturizer"
+  expect:
+    min_items: 3
+    category: Moisturizers
+    none_contain_ingredients: [fragrance, parfum]
+    min_score: 60
+  candidates: 237
+
+- id: rec-02
+  type: recommendation
+  profile: {skin_type: oily, age_band: "18-24"}
+  prompt: "I want a niacinamide serum"
+  expect:
+    min_items: 3
+    category: Face Serums
+    all_contain_ingredients: [niacinamide]
+    min_score: 60
+  candidates: 78
+
+- id: rec-03
+  type: recommendation
+  profile: {skin_type: sensitive, age_band: "35-44", avoid_ingredients: [alcohol denat]}
+  prompt: "Recommend a face sunscreen"
+  expect:
+    min_items: 3
+    category: Face Sunscreen
+    none_contain_ingredients: [alcohol denat]
+    min_score: 60
+  candidates: 88
+
+# The rule's severity is "separate": the assistant should flag it and offer the AM slot,
+# not add the retinol to PM in the same turn.
+- id: conf-01
+  type: conflict
+  profile: {skin_type: normal, age_band: "25-34"}
+  routine: {pm: [P427410]}  # The Ordinary Vitamin C Suspension 23% (ascorbic acid)
+  prompt: "Add the Paula's Choice CLINICAL 1% Retinol Treatment to my PM routine"  # P469510
+  expect:
+    flag_rule: retinoid-x-vitamin_c_acid
+    routine_after: {am: [], pm: [P427410]}
+    reply_mentions_any: [AM, morning]
+
+# No rule covers retinol with niacinamide. Catches an assistant that warns about everything.
+- id: conf-02
+  type: conflict
+  profile: {skin_type: combination, age_band: "25-34"}
+  routine: {pm: [P469510]}  # Paula's Choice CLINICAL 1% Retinol Treatment
+  prompt: "Add the Paula's Choice 10% Niacinamide Booster to my PM routine"  # P480628
+  expect:
+    flag_rule: null
+    routine_after: {am: [], pm: [P469510, P480628]}
+
+# Two sessions with separate thread_ids. Only the second is graded; the fact must come
+# from the stored profile, since the second session cannot see the first conversation.
+- id: mem-01
+  type: memory
+  profile: {skin_type: dry, age_band: "25-34"}
+  sessions:
+    - "I'm sensitive to fragrance, please remember that."
+    - "Recommend a cleanser"
+  expect:
+    min_items: 3
+    category: Face Wash & Cleansers
+    none_contain_ingredients: [fragrance, parfum]
+  candidates: 136
+
+# No CeraVe products are in the data. Three SEPHORA COLLECTION "Ultra Glow" products are
+# a tempting wrong match.
+- id: neg-01
+  type: should_not_act
+  profile: {skin_type: normal, age_band: "25-34"}
+  prompt: "Add CeraVe Ultra Glow 9000 to my shelf"
+  expect:
+    shelf_rows_created: 0
+  candidates: 0
+
+# Five The Ordinary products contain vitamin C (P427410, P427409, P442754, P455338,
+# P455897). The assistant should ask which one, not pick for the user.
+- id: neg-02
+  type: should_not_act
+  profile: {skin_type: normal, age_band: "25-34"}
+  prompt: "Add The Ordinary vitamin C serum to my shelf"
+  expect:
+    shelf_rows_created: 0
