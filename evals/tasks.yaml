@@ -13,7 +13,8 @@
 #
 # "candidates" records how many loaded products satisfy the task, checked by hand with
 # SQL when the task was written (stage 1), so every task has a correct answer.
-# min_score cannot be checked until stage 2 stores scores.
+# min_score: a product with no score (too few rated ingredients) does not meet it.
+# With stage 2's scores, the candidates meeting min_score 60 are: rec-01 208, rec-02 74, rec-03 52.
 
 - id: rec-01
   type: recommendation

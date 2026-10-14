@@ -1,0 +1,17 @@
+{
+  "baseline": 70,
+  "colors": {
+    "red": {"points": -15, "cap": -45},
+    "orange": {"points": -8, "cap": -24},
+    "green": {"points": 4, "cap": 30}
+  },
+  "min_rated_share": 0.5,
+  "rinse_off_categories": ["Face Wash & Cleansers", "Makeup Removers", "Face Masks", "Exfoliators"],
+  "grades": [
+    {"min": 85, "grade": "Excellent"},
+    {"min": 70, "grade": "Good"},
+    {"min": 50, "grade": "Fair"},
+    {"min": 30, "grade": "Poor"},
+    {"min": 0, "grade": "Avoid"}
+  ]
+}
