@@ -172,6 +172,7 @@ def test_rules_files_are_valid():
         assert entry["color"] in COLORS and entry["color"] != "grey", entry
         assert entry.get("rinse_off_color", "blue") in COLORS, entry
         assert entry["reason"], entry
+        assert entry.get("family", "x").isidentifier(), entry
         if entry["color"] in ("red", "orange"):
             assert entry.get("source", "").startswith("https://"), f"{entry['name']} needs a source"
         for name in [entry["name"], *entry.get("aliases", [])]:

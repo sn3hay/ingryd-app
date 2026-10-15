@@ -1,0 +1,102 @@
+{
+  "trace_after_share": 0.67,
+  "trace_min_ingredients": 6,
+  "rules": [
+    {
+      "id": "retinoid-x-vitamin_c_acid",
+      "a": "retinoid",
+      "b": "vitamin_c_acid",
+      "scope": "same_routine",
+      "severity": "separate",
+      "reason": "Both can irritate; commonly advised in different routines",
+      "suggestion": "Vitamin C in AM, retinoid in PM",
+      "raise_if_sensitive": true,
+      "source": "https://my.clevelandclinic.org/health/treatments/23293-retinol",
+      "status": "draft"
+    },
+    {
+      "id": "retinoid-x-aha",
+      "a": "retinoid",
+      "b": "aha",
+      "scope": "same_routine",
+      "severity": "separate",
+      "reason": "Both exfoliate and can dry and irritate the skin together",
+      "suggestion": "AHA in AM and retinoid in PM, or use them on different nights",
+      "raise_if_sensitive": true,
+      "source": "https://my.clevelandclinic.org/health/treatments/23293-retinol",
+      "status": "draft"
+    },
+    {
+      "id": "retinoid-x-bha",
+      "a": "retinoid",
+      "b": "bha",
+      "scope": "same_routine",
+      "severity": "separate",
+      "reason": "Both can dry and irritate the skin together",
+      "suggestion": "Salicylic acid in AM, retinoid in PM",
+      "raise_if_sensitive": true,
+      "source": "https://my.clevelandclinic.org/health/treatments/23293-retinol",
+      "status": "draft"
+    },
+    {
+      "id": "retinoid-x-benzoyl_peroxide",
+      "a": "retinoid",
+      "b": "benzoyl_peroxide",
+      "scope": "same_routine",
+      "severity": "separate",
+      "reason": "Benzoyl peroxide breaks down some retinoids, such as tretinoin, when applied at the same time",
+      "suggestion": "Benzoyl peroxide in AM, retinoid in PM",
+      "raise_if_sensitive": false,
+      "source": "https://pubmed.ncbi.nlm.nih.gov/9990414/",
+      "status": "draft"
+    },
+    {
+      "id": "aha-x-bha",
+      "a": "aha",
+      "b": "bha",
+      "scope": "same_routine",
+      "severity": "caution",
+      "reason": "Two exfoliating acids together can irritate and dry the skin",
+      "suggestion": "Start with one; if the skin gets red or dry, use them on different days",
+      "raise_if_sensitive": true,
+      "source": "https://health.clevelandclinic.org/glycolic-acid",
+      "status": "draft"
+    },
+    {
+      "id": "aha-x-aha",
+      "a": "aha",
+      "b": "aha",
+      "scope": "same_routine",
+      "severity": "caution",
+      "reason": "Two AHA products in one routine double the exfoliation and can irritate",
+      "suggestion": "Keep one AHA product in this routine",
+      "raise_if_sensitive": true,
+      "source": "https://health.clevelandclinic.org/glycolic-acid",
+      "status": "draft"
+    },
+    {
+      "id": "vitamin_c_acid-x-aha",
+      "a": "vitamin_c_acid",
+      "b": "aha",
+      "scope": "same_routine",
+      "severity": "caution",
+      "reason": "Both are acidic and can irritate together, especially when starting either",
+      "suggestion": "Vitamin C in AM, AHA in PM",
+      "raise_if_sensitive": true,
+      "source": "https://health.clevelandclinic.org/glycolic-acid",
+      "status": "draft"
+    },
+    {
+      "id": "retinoid-x-retinoid",
+      "a": "retinoid",
+      "b": "retinoid",
+      "scope": "same_routine",
+      "severity": "caution",
+      "reason": "Two retinoid products in one routine add irritation; retinoids are best started low and slow",
+      "suggestion": "Keep one retinoid product in this routine",
+      "raise_if_sensitive": true,
+      "source": "https://my.clevelandclinic.org/health/treatments/23293-retinol",
+      "status": "draft"
+    }
+  ]
+}

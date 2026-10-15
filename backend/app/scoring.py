@@ -31,6 +31,7 @@ class Rating:
     color: str
     rinse_off_color: str | None
     group: str
+    family: str | None  # for conflict rules (app/conflicts.py); not used in the score
     reason: str
     source: str | None
 
@@ -68,6 +69,7 @@ def parse_rules(scoring: dict, ingredients: list[dict]) -> Rules:
             color=entry["color"],
             rinse_off_color=entry.get("rinse_off_color"),
             group=entry.get("group", entry["name"]),
+            family=entry.get("family"),
             reason=entry["reason"],
             source=entry.get("source"),
         )
@@ -99,8 +101,12 @@ def lookup_keys(name: str) -> list[str]:
     return list(dict.fromkeys(k for k in keys if k))
 
 
+def find_rating(name: str, rules: Rules) -> Rating | None:
+    return next((rules.ratings[k] for k in lookup_keys(name) if k in rules.ratings), None)
+
+
 def rate(name: str, rinse_off: bool, rules: Rules) -> tuple[RatedIngredient, Rating | None]:
-    rating = next((rules.ratings[k] for k in lookup_keys(name) if k in rules.ratings), None)
+    rating = find_rating(name, rules)
     if rating is None:
         return RatedIngredient(name, "grey"), None
     color = rating.rinse_off_color if rinse_off and rating.rinse_off_color else rating.color
